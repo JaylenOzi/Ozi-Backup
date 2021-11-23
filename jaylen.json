@@ -1,0 +1,16 @@
+{
+  "Prefix":[".","?","!"],
+  "Owner":"612688335944679600",
+  "Token":"buraya_tokenini_girmelisin_askim",
+  "MongoUrl":"buraya_mongourl_girmelisin_askim",
+  "backupkanal":"buraya_Backup_için_logkanal_girmelisin",
+  "guildID":"sunucunun_idsi",
+  "BotSesKanal":"botunun_ses_kanalının_id",
+  "BotDurum":"botunun_durumu_biosu",
+  "BotFooter":"botun_Embedi_için_altbaslık",
+  "BotStatus":"dnd-online-idle-invisible (seç birini kankam)",
+
+  "green":"<a:green:899337284481077298>", 
+  "greenid":"899337284481077298"
+
+  }
