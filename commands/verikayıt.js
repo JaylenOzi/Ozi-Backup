@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const mongoose = require('mongoose');
 const ayarlar = require('../jaylen.json');
 const RoleData = require('../models/role.js');
 const ChannelData = require('../models/Channel.js');
