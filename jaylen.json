@@ -1,5 +1,5 @@
 {
-  "Prefix":[".","?","!"],
+  "Prefix":".",
   "Owner":"612688335944679600",
   "Token":"buraya_tokenini_girmelisin_askim",
   "MongoUrl":"buraya_mongourl_girmelisin_askim",
