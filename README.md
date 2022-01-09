@@ -8,6 +8,10 @@
 
 - Botumda bulunan jaylen.json kısmını doldurduktan sonra modüllerin yüklenmesi için npm i yapabilirsiniz botunuz hazır esenlikle kalın.
 
+![image](https://user-images.githubusercontent.com/92666466/148685682-f34fb1e9-1aab-4314-a352-4e1159e8254d.png)
+![image](https://user-images.githubusercontent.com/92666466/148685686-2d4ba20b-b3e6-4e63-9ad5-3f8a160f7f14.png)
+![image](https://user-images.githubusercontent.com/92666466/148685689-cffdf711-4474-4078-b5b2-02d7461fb3ba.png)
+![image](https://user-images.githubusercontent.com/92666466/148685696-2be3327e-196b-4dfd-842f-937e344a92e1.png)
 ![image](https://user-images.githubusercontent.com/92666466/143085087-54b461fe-526d-4e48-9bb7-497b8a444511.png)
 ![image](https://user-images.githubusercontent.com/92666466/143085098-f153f296-6c92-4c87-9daa-df4cb5930d9b.png)
 ![image](https://user-images.githubusercontent.com/92666466/143085113-22289ea1-0e99-4a84-95de-54b6da12ecd7.png)
