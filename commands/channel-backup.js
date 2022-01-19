@@ -43,6 +43,7 @@ exports.run = async (client, message, args) => {
                 };
   
               }else if(channel.type === "category"){
+              channel.setPosition(channelData.position);
                 if(Object.keys(channelData.permissionOverwrites[0]).length > 0) {
                   for (let i = 0; i < Object.keys(channelData.permissionOverwrites[0]).length; i++) {
                     channel.createOverwrite(channelData.permissionOverwrites[0][i].permission, channelData.permissionOverwrites[0][i].thisPermOverwrites);
