@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const request = require('request');
 const ChannelData = require('./models/Channel.js');
 const RoleData = require('./models/role.js');
-const userRoles = require('./models/UserRoles.js');
 
 mongoose.connect(ayarlar.MongoUrl, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connection.on("open", async() => {
