@@ -14,11 +14,12 @@ console.log("Mongo Bağlandı.")
 })
 
 client.on('ready', async () => {
+setInterval(() => {
   client.user.setPresence({ activity: { name: ayarlar.BotDurum }, status: ayarlar.BotStatus });
 
     let sesKanal = client.channels.cache.get(ayarlar.BotSesKanal);
     if(sesKanal) sesKanal.join().catch(err => console.error("Ses kanalına giriş başarısız!"));
-
+}, 750);
 })
 
 client.login(ayarlar.Token).then(ozi => console.log(`${client.user.username} İsmi ile giriş yapıldı! Database Online`)).catch(err => console.log("Database Botunuz giriş yapamadı!"));
