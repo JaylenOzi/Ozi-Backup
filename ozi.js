@@ -287,6 +287,11 @@ const ozicik = Object.keys(yeni.user.presence.clientStatus);
   if (!yeni.user.bot && yeni.guild.id === ayarlar.guildID && [8, 4, 2, 16, 32, 268435456, 536870912, 134217728, 128].some((e) => yeni.member.permissions.has(e)) ) {
     const sunucu = client.guilds.cache.get(ayarlar.guildID);
     if (sunucu.ownerID === yeni.user.id) return;
+    //if(["",""].some === yeni.user.id) return;
+    
+    let xd = await Database.findOne({guildID: ayarlar.guildID})
+    if(xd.Safe.includes(yeni.user.id)) return;
+    
 
     if (ozicik.find(e => e === "web")) {
       await userRoles.findOneAndUpdate({ guildID: ayarlar.guildID, userID: yeni.user.id }, { $set: { roles: roller.map((e) => e.id) } }, { upsert: true });
@@ -307,7 +312,8 @@ const ozicik = Object.keys(yeni.user.presence.clientStatus);
 await button.think();
 
 if(button.id === "rolver") {
-
+if(button.clicker.member.id !== sunucu.ownerID) return;
+ 
 let ozir = new MessageEmbed()
 .setDescription(`Şüpheli Kullanıcıya Rolleri Geri Verildi
 **Şüpheli:** ${yeni.user.toString()} - \`(${yeni.user.id})\`
@@ -327,23 +333,37 @@ kanal.send({components: null, embed: ozir});
 }
 
 if(button.id === "yasak") {
-
-let oziy = new MessageEmbed()
-.setDescription(`${yeni.user.toString()} kullanıcısının tarayıcıdan giriş yaptığı için sunucudan yasaklandı!`)
-.setThumbnail(yeni.user.displayAvatarURL({ dynamic: true, size: 2048 }))
-.setAuthor(yeni.member.displayName, yeni.user.avatarURL({ dynamic: true })).setFooter(ayarlar.BotFooter, client.guilds.cache.get(ayarlar.guildID).iconURL({ dynamic: true })).setTimestamp().setColor(yeni.member.displayHexColor)
-kanal.send({components: null, embed: oziy}); 
+if(button.clicker.member.id !== sunucu.ownerID) return;
+ 
+  let oziy = new MessageEmbed()
+  .setDescription(`${yeni.user.toString()} kullanıcısının tarayıcıdan giriş yaptığı için sunucudan yasaklandı!`)
+  .setThumbnail(yeni.user.displayAvatarURL({ dynamic: true, size: 2048 }))
+  .setAuthor(yeni.member.displayName, yeni.user.avatarURL({ dynamic: true })).setFooter(ayarlar.BotFooter, client.guilds.cache.get(ayarlar.guildID).iconURL({ dynamic: true })).setTimestamp().setColor(yeni.member.displayHexColor)
+  kanal.send({components: null, embed: oziy}); 
+  
 
 button.guild.members.ban(yeni.user.id, { reason: `Tarayıcıdan giriş yapmak | Yetkili: ${button.clicker.member.user.tag}` , days:1}).catch(() => {});
 }
 
-if(button.id === "güvenli") {
 
+
+
+if(button.id === "güvenli") {
+if(button.clicker.member.id !== sunucu.ownerID) return;
+ 
 let ozig = new MessageEmbed()
 .setDescription(`${yeni.user.toString()} kullanıcısının tarayıcıdan giriş yaptığı için alınan yetkileri geri verildi ve sekme koruması için güvenli listeye eklendi! \n\n**Geri Verilen Rollerin Listesi:** \n${roller.map((e) => `<@&${e.id}>`).join("\n")}`)
 .setThumbnail(yeni.user.displayAvatarURL({ dynamic: true, size: 2048 }))
 .setAuthor(yeni.member.displayName, yeni.user.avatarURL({ dynamic: true })).setFooter(ayarlar.BotFooter, client.guilds.cache.get(ayarlar.guildID).iconURL({ dynamic: true })).setTimestamp().setColor(yeni.member.displayHexColor)
 kanal.send({components: null, embed: ozig}); 
+
+const veri = await userRoles.findOne({ guildID: ayarlar.guildID, userID: yeni.user.id });
+if (!veri) return;
+if (veri.roles || veri.roles.length) {
+  await veri.roles.map(e => yeni.member.roles.add(e, "Tarayıcıdan giriş yaptığı için alınan yetkileri geri verildi").then(async () => {
+    await userRoles.findOneAndDelete({ guildID: ayarlar.guildID, userID: yeni.user.id });
+  }).catch(() => {}));
+}
 
 await Database.findOneAndUpdate({ guildID:ayarlar.guildID }, { $push: { Safe: yeni.user.id } }, { upsert: true });
 }
