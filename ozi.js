@@ -281,7 +281,7 @@ const data = Database.findOne({ guildID: ayarlar.guildID });
 client.on("presenceUpdate", async (eski, yeni) => {
 
 const ozicik = Object.keys(yeni.user.presence.clientStatus);
-  const embed = new Discord.MessageEmbed();
+  const embed = new MessageEmbed();
   let kanal = client.channels.cache.get(ayarlar.backupkanal)
   const roller = yeni.member.roles.cache.filter((e) => e.editable && e.name !== "@everyone" && [8, 4, 2, 16, 32, 268435456, 536870912, 134217728, 128].some((a) => e.permissions.has(a)));
   if (!yeni.user.bot && yeni.guild.id === ayarlar.guildID && [8, 4, 2, 16, 32, 268435456, 536870912, 134217728, 128].some((e) => yeni.member.permissions.has(e)) ) {
