@@ -36,6 +36,24 @@ client.on('voiceStateUpdate', async (___, newState) => {
      });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+let Tokens = ayarlar.DağıtıcıTokens;
+const Bots = global.Bots = [];
+
+Tokens.forEach(token => {
+const bot = global.client = new Discord.Client({fetchAllMembers: true});
+ 
+  bot.on("ready", () => {
+  console.log(`(${bot.user.username}) adlı destekçi hesapta [${bot.guilds.cache.get(ayarlar.guildID).name}] adlı sunucuda giriş yapıldı.`);
+  bot.user.setPresence({ activity: { name: ayarlar.BotDurum }, status: ayarlar.BotStatus });
+  bot.Busy = false;
+  bot.Uj = 0;
+  Bots.push(bot);})
+  bot.login(token).then(e => {}).catch(e => {console.error(`${token.substring(Math.floor(token.length / 2))} adlı bota giriş yapılırken başarısız olundu!.`)})})
+
+  
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 client.on("ready", () => {
   const log = message => {
