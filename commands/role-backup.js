@@ -8,7 +8,8 @@ exports.run = async (client, message, args) => {
   if (ayarlar.Owner.includes(message.author.id) === false) return message.channel.send(`**Bu komutu sadece \`JAYLEN\` kullanabilir!**`);
 
     if (!args[0] || isNaN(args[0])) return message.channel.send(`Geçerli bir Rol ID'si belirtmelisin.`);
-  
+   let data = await RoleData.findOne({guildID: ayarlar.guildID, roleID: args[0]})
+
     RoleData.findOne({guildID: ayarlar.guildID, roleID: args[0]}, async (err, RoleData) => {
      if (!RoleData) return message.channel.send("Belirtilen Rol ID'si ile ilgili veri tabanında veri bulunamadı!");
      const kEmbed = new MessageEmbed()
@@ -16,6 +17,7 @@ exports.run = async (client, message, args) => {
      .setAuthor(message.member.displayName, message.author.avatarURL({dynamic:true}))
      .setTimestamp()
      .setDescription(`**${RoleData.name}** adlı rolün yedeği kullanılarak rol oluşturulup, üyelere dağıtılacaktır.\nOnaylıyor iseniz ${green} emojisine basın!`)
+
  
      await message.channel.send({ embed: kEmbed }).then(msg => {
        msg.react(ayarlar.greenid);
@@ -27,7 +29,7 @@ exports.run = async (client, message, args) => {
        collect.on("collect", async r => {
          setTimeout(async function(){
  
-           msg.delete().catch(err => console.log(`Backup mesajı silinemedi.`));
+           msg.delete().catch(err => console.log(`Backup mesajı silinemedi .c`));
  
  
        let yeniRol = await message.guild.roles.create({
@@ -39,9 +41,10 @@ exports.run = async (client, message, args) => {
            position: RoleData.position,
            mentionable: RoleData.mentionable
          },
-         reason: "`Yeniden rol açıldı.`"
+         reason: "`Databaseden Yeniden rol açıldı.`"
        });
  
+  
        setTimeout(() => {
          let kanalPermVeri = RoleData.channelOverwrites;
          if (kanalPermVeri) kanalPermVeri.forEach((perm, index) => {
@@ -58,16 +61,28 @@ exports.run = async (client, message, args) => {
              kanal.createOverwrite(yeniRol, yeniKanalPermVeri).catch(console.error);
            }, index*5000);
          });
-       }, 5000);
+       }, 5000); 
+
+            let length = data.members.length;
+            if (length <= 0) return console.log(`[${yeniRol.id}] Rol kurulumunda kayıtlı üye olmadığından dolayı rol dağıtımı gerçekleştirmedim.`);
+            let availableBots = global.Bots.filter(e => !e.Busy);
+            if (availableBots.length <= 0) availableBots = global.Bots.sort((x, y) => y.Uj - x.Uj).slice(0, Math.round(length / global.Bots.length));
+            let perAnyBotMembers = Math.floor(length / availableBots.length);
+            if (perAnyBotMembers < 1) perAnyBotMembers = 1;
+            for (let index = 0; index < availableBots.length; index++) {
+                const bot = availableBots[index];
+                let ids = data.members.slice(index * perAnyBotMembers, (index + 1) * perAnyBotMembers);
+                if (ids.length <= 0) { processBot(bot, false, -perAnyBotMembers); break; }
+                let guild = bot.guilds.cache.first();
+                message.channel.send(`Başarılı bir şekilde kurulum başladı roller dağıtılıyor kanallara izinleri ekleniyor.`)
+                ids.every(async id => {
+                let member = guild.member(id);
+                if(!member){
+                console.log(`[${args[0]}] Rol Kurulumundan sonra ${bot.user.username} - ${id} adlı üyeyi sunucuda bulamadım.`);
+                return true;}
+                await member.roles.add(yeniRol.id).then(e => {console.log(`[${args[0]}] Rol kurulumundan sonra ${bot.user.tag} - ${member.user.username} adlı üye ${yeniRol.name} rolünü aldı.`);}).catch(e => {console.log(`[${yeniRol.id}] Olayından sonra ${bot.user.username} - ${member.user.username} adlı üyeye rol veremedim.`);});});
+                 processBot(bot, false, -perAnyBotMembers); }
  
-       let roleMembers = RoleData.members;
-       roleMembers.forEach((member, index) => {
-         let uye = message.guild.members.cache.get(member);
-         if (!uye || uye.roles.cache.has(yeniRol.id)) return;
-         setTimeout(() => {
-           uye.roles.add(yeniRol.id).catch(console.error);
-         }, index*3000);
-       }); 
       
             let logKanali = client.channels.cache.get(ayarlar.backupkanal);
             if (logKanali) { logKanali.send(`${message.author} (\`${message.author.id}\`) kullanıcısı\n<#${message.channel.id}> (\`${message.channel.id}\`) kanalında \`.ryükle\` komutu kullandı.\nKomut İçeriği: **${RoleData.name}** - (\`${RoleData.roleID}\`) rolün yedeğini kurmaya başladı.\n──────────────────────────`)} else { message.guild.owner.send(new Discord.MessageEmbed().setColor("#fd72a4").setAuthor('Kanal Yedeği Kullanıldı!', message.guild.iconURL({dynamic: true})).setDescription(`${message.author} (\`${message.author.id}\`) tarafından ${RoleData.name} (\`${RoleData.roleID}\`) rolünün yedeği kurulmaya başlandı! Rol sunucuda tekrar aynı ayarları ile oluşturulacak, üyelere dağıtılacaktır!`).setFooter(ayarlar.BotFooter).setTimestamp()).catch(err => {}); };               
@@ -90,4 +105,21 @@ exports.help = {
     name: 'ryükle',
     description: 'Silinen bir rolü aynı izinleri ile kurar.',
     usage: 'ryükle <id>'
+}
+
+function giveBot(length) {
+    if (length > global.Bots.length) length = global.Bots.length;
+    let availableBots = global.Bots.filter(e => !e.Busy);
+    if (availableBots.length <= 0) availableBots = global.Bots.sort((x, y) => x.Uj - y.Uj).slice(0, length);
+
+    return availableBots;
+}
+
+function processBot(bot, busy, job, equal = false) {
+    bot.Busy = busy;
+    if (equal) bot.Uj = job;
+    else bot.Uj += job;
+
+    let index = global.Bots.findIndex(e => e.user.id == bot.user.id);
+    global.Bots[index] = bot;
 }
