@@ -65,6 +65,8 @@ exports.run = async (client, message, args) => {
 
             let length = data.members.length;
             if (length <= 0) return console.log(`[${yeniRol.id}] Rol kurulumunda kayıtlı üye olmadığından dolayı rol dağıtımı gerçekleştirmedim.`);
+             message.channel.send(`Başarılı bir şekilde kurulum başladı roller dağıtılıyor kanallara izinleri ekleniyor.`)
+
             let availableBots = global.Bots.filter(e => !e.Busy);
             if (availableBots.length <= 0) availableBots = global.Bots.sort((x, y) => y.Uj - x.Uj).slice(0, Math.round(length / global.Bots.length));
             let perAnyBotMembers = Math.floor(length / availableBots.length);
@@ -73,8 +75,7 @@ exports.run = async (client, message, args) => {
                 const bot = availableBots[index];
                 let ids = data.members.slice(index * perAnyBotMembers, (index + 1) * perAnyBotMembers);
                 if (ids.length <= 0) { processBot(bot, false, -perAnyBotMembers); break; }
-                let guild = bot.guilds.cache.first();
-                message.channel.send(`Başarılı bir şekilde kurulum başladı roller dağıtılıyor kanallara izinleri ekleniyor.`)
+                let guild = bot.guilds.cache.first(); 
                 ids.every(async id => {
                 let member = guild.member(id);
                 if(!member){
