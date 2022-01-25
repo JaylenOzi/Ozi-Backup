@@ -13,7 +13,7 @@
     "discord.js": "^12.5.3",
     "fs": "^0.0.1-security",
     "moment": "^2.29.1",
-    "mongoose": "^5.13.12",
+    "mongoose": "^5.9.15",
     "request": "^2.88.2"
   }
 }
