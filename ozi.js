@@ -114,6 +114,8 @@ client.channels.cache.get(ayarlar.backupkanal).send(`Sunucu kanalları güvenlik
 }, 7200000);
 
 function rolebackup (guildID) {
+ RoleData.deleteMany({}); 
+
   let guild = client.guilds.cache.get(ayarlar.guildID);
   if (!guild) return;
 
@@ -159,6 +161,8 @@ function rolebackup (guildID) {
 };
 
 function kanalbackup() {
+ ChannelData.deleteMany({}); 
+
   let guild = client.guilds.cache.get(ayarlar.guildID);
   if (!guild) return;
   if (guild) {
