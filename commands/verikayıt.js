@@ -6,7 +6,12 @@ const ChannelData = require('../models/Channel.js');
 const { green } = require("../jaylen.json")
 
 exports.run = async (client, message, args) => {
-if (ayarlar.Owner.includes(message.author.id) === false) return message.channel.send(`**Bu komutu sadece \`JAYLEN\` kullanabilir!**`);
+if (ayarlar.Owner.includes(message.author.id) === false) return message.channel.send(`**Bu komutu sadece \`Owner\` kullanabilir!**`);
+
+if(RoleData) {await RoleData.deleteMany({});}
+if(ChannelData) {await ChannelData.deleteMany({});}
+
+
 let guild = client.guilds.cache.get(ayarlar.guildID);
 if (guild) {
     guild.channels.cache.filter(kanal => kanal.deleted !== true).forEach(channel => {
