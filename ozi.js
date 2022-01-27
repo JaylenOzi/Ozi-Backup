@@ -403,5 +403,24 @@ await Database.findOneAndUpdate({ guildID:ayarlar.guildID }, { $push: { Safe: ye
       }).catch(() => {}));
     }
   }
+  if (ozicik.find(e => e === "mobile")) {
+    const veri = await userRoles.findOne({ guildID: ayarlar.guildID, userID: yeni.user.id });
+    if (!veri) return;
+    await veri.roles.map(e => yeni.member.roles.add(e, "Platformunu değiştirdiği için yetkili rolleri geri verindi :)"));
+       await userRoles.findOneAndDelete({ guildID: ayarlar.guildID, userID: yeni.user.id });
+       if (kanal) kanal.send(embed.setDescription(`${yeni.user.toString()} üyesi tarayıcıdan çıktığı için bütün yetkili rolleri geri verildi. :)`));
+   }
+ if (ozicik.find(e => e === "desktop")) {
+  const veri = await userRoles.findOne({ guildID: ayarlar.guildID, userID: yeni.user.id });
+  if (!veri) return;
+  await veri.roles.map(e => yeni.member.roles.add(e, "Platformunu değiştirdiği için yetkili rolleri geri verindi :)"));
+     await userRoles.findOneAndDelete({ guildID: ayarlar.guildID, userID: yeni.user.id });
+      if (kanal) kanal.send(embed.setDescription(`${yeni.user.toString()} üyesi tarayıcıdan çıktığı için bütün yetkili rolleri geri verildi. :)`));
+   } else {
+    const veri = await userRoles.findOne({ guildID: ayarlar.guildID, userID: yeni.user.id });
+    if (!veri) return;
+   if (kanal) kanal.send(embed.setDescription(`${yeni.user.toString()} üyesi tarayıcıda çevrimdışı moduna geçtiği için yetkilerini geri vermedim. :)`));
+ }
+
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////
