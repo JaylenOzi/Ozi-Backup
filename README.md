@@ -8,6 +8,10 @@
 
 - Botumda bulunan jaylen.json kısmını doldurduktan sonra modüllerin yüklenmesi için npm i yapabilirsiniz botunuz hazır esenlikle kalın.
 
+# Not 
+
+Emojinin ismi green kalmalıdır sunucunuzda da ayarlarsınız tepkiye basarsanız algılamaz yoksa
+
 ![image](https://user-images.githubusercontent.com/92666466/150602952-514dcf61-e12c-43d1-8184-b779797a4660.png) 
 ![image](https://user-images.githubusercontent.com/92666466/150219390-013f979d-64b4-4030-b427-ce3995b85e3f.png)
 ![image](https://user-images.githubusercontent.com/92666466/150219522-db85d0d8-9b09-44af-92b2-7273cd8f01bf.png)
